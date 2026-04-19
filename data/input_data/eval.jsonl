@@ -1,0 +1,13 @@
+{"question": "What are the revenues for AMD in 2025?", "expected_answer": "The revenues for AMD in 2025 were 34,639 million", "expected_source": "AMD Q4'25 Earnings Slides FINAL.pdf", "expected_page": 17}
+{"question": "Is AMD growing the operating margin within the data center vertical from 2024 to 2025?", "expected_answer": "Yes, AMD is grew a 3% from Q4 2024 to Q4 2025", "expected_source": "AMD Q4'25 Earnings Slides FINAL.pdf", "expected_page": 21}
+{"question": "What is the EBITDA CAGR growth for Zedcor?", "expected_answer": "Zedcor has grown at a rate of 44% Adj. EBITDA CAGR", "expected_source": "2025-12-15-Investor-Slide-Deck.pdf", "expected_page": 3}
+{"question": "What is the reocurring revenue percentage for Zedcor?", "expected_answer": "Zedcor reocurring revenue is greater than 85%.", "expected_source": "2025-12-15-Investor-Slide-Deck.pdf", "expected_page":12 }
+{"question": "What are the Total loans and borrowings for the company Enterprise Group in 2025?", "expected_answer": " Total loans and borrowings for Enterprise Group in 2025 is $26,858,012", "expected_source": "EGI2025 - December31, 2025 FS - Final with audit report-1.pdf", "expected_page": 23 }
+{"question": "Did the company Enterprise Group performed any acquisition in 2025?", "expected_answer": "During the year ended December 31, 2025, the Company acquired all of the issued and outstanding shares of Flex 
+Leasing Power and Service ULC (o/a Evolution Power Solutions)", "expected_source": "EGI2025 - December31, 2025 FS - Final with audit report-1.pdf", "expected_page": 4 }
+{"question": "How much money invested Hims and Hers in customer acquisition during 2025?", "expected_answer": "Hims and Hers invested a total amount of $814.9 million in customer acquisition in 2025", "expected_source": "hh10k.pdf", "expected_page": 98}
+{"question": "What happened with the FDA and hims and hers?", "expected_answer": "The FDA issued a statement (the “FDA Statement”) indicating that the agency intends to restrict
+GLP-1 active pharmaceutical ingredients intended for use in non-FDA-approved compounded drugs ", "expected_source": "hh10k.pdf", "expected_page":131 }
+{"question": "What is the current hashrate mining bitcoin for iren?", "expected_answer": "Their average operating hashrate was reported to be 25.7 EH/s (Exahash per second)", "expected_source": "10KIREN2025.pdf", "expected_page":117 }
+
+

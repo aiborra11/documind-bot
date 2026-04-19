@@ -9,8 +9,8 @@ class IngestionConfig(BaseSettings):
     #TODO: We must validate what are we filtering out with these thresholds.
     MIN_CHUNK_LENGTH: int = 50              # Drops tiny chunks coming from headers, footers, or page numbers that don't provide meaningful context.
     MIN_ALPHANUMERIC_RATIO: float = 0.4     # Ensures chunks contain a reasonable amount of text vs. symbols, which helps preserve tables/markdown while filtering out noise.
-    ALLOWED_EXTENSIONS: set[str] = {"pdf", ".xls", ".xlsx", ".doc", ".docx", ".txt"}
-    MAX_FILE_SIZE_MB: int = 35              
+    ALLOWED_EXTENSIONS: set[str] = {"pdf"}  
+    MAX_FILE_SIZE_MB: int = 40              
     UPLOAD_CHUNK_SIZE_BYTES: int = 1024 * 1024
     TEMP_FILE_SUFFIX: str = ".pdf"
     EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"

@@ -49,7 +49,7 @@ class DocumentProcessor:
         try:
             with fitz.open(file_path) as pdf_document:
                 logger.info(f"Starting hybrid MarkItDown extraction for {len(pdf_document)} pages.")
-                
+                # TODO: add filter so when it is not a pdf file we force to open with markitDown and not with PyMuPDF.
                 for page_num in range(len(pdf_document)):
                     # 1. Create an empty single-page PDF in memory
                     single_page_pdf = fitz.open()
@@ -132,7 +132,8 @@ class DocumentProcessor:
     def save_document(self, file_path: str, filename: str) -> str:
         """Saves the document to the raw data directory."""
         base_dir = Path(__file__).resolve().parent.parent.parent
-        raw_dir = base_dir / app_settings.RAW_DATA_PATH
+        safe_relative_path = app_settings.RAW_DATA_PATH.lstrip("\\/")
+        raw_dir = base_dir / safe_relative_path
         raw_dir.mkdir(parents=True, exist_ok=True)
         
         dest_path = raw_dir / filename

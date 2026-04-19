@@ -7,7 +7,7 @@ class AppConfig(BaseSettings):
     PORT: int = 8000
     RELOAD: bool = True
     DEBUG: bool = True
-    RAW_DATA_PATH: str = "../data/raw"
+    RAW_DATA_PATH: str = "data/raw"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
