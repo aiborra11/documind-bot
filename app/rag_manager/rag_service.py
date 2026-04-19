@@ -4,7 +4,7 @@ from sentence_transformers import CrossEncoder
 # --------- Project Imports ---------
 from app.utils.utils import get_logger
 from app.database_manager.chroma_client import ChromaManager
-from app.retrieval_manager.rag_config import rag_config
+from app.rag_manager.rag_config import rag_config
 
 logger = get_logger(__name__)
 

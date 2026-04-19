@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 # --------- Project Imports ---------
 from app.utils.utils import get_logger
 from app.routers_manager.dependencies import get_rag_service
-from app.retrieval_manager.rag_service import RAGService
+from app.rag_manager.rag_service import RAGService
 
 logger = get_logger(__name__)
 

@@ -7,7 +7,6 @@ from chromadb.api.models.Collection import Collection
 # -------------- Project Imports --------------
 from app.utils.utils import get_logger
 from app.database_manager.database_config import db_config
-from app.rag_config import rag_config
 
 
 logger = get_logger(__name__)
@@ -43,7 +42,7 @@ class ChromaManager:
             self._client = chromadb.PersistentClient(path=db_config.VECTOR_DB_PATH)
             
             self._embedding_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
-                model_name=rag_config.EMBEDDING_MODEL
+                model_name=db_config.EMBEDDING_MODEL
             )
             
             self._collection = self._initialize_collection()

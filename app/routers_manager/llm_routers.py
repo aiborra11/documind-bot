@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.utils.utils import get_logger
 from app.llm_manager.llm_service import LLMService
-from app.retrieval_manager.rag_service import RAGService
+from app.rag_manager.rag_service import RAGService
 from app.routers_manager.dependencies import get_rag_service, get_llm_service
 
 logger = get_logger(__name__)
