@@ -1,8 +1,8 @@
 # Documind Bot: Financial Analysis RAG System
 
-**Documind Bot** is a high-performance Retrieval-Augmented Generation (RAG) pipeline designed to extract precise insights from financial statements and complex documents. It leverages a two-stage retrieval architecture to ensure maximum accuracy and verifiable citations.
+**Documind Bot** is a Retrieval-Augmented Generation (RAG) pipeline designed to extract precise insights from financial statements and complex documents. It leverages a two-stage retrieval architecture to ensure maximum accuracy and verifiable citations.
 
-## 🛠 Tech Stack
+## Tech Stack
 - **Framework:** FastAPI (Asynchronous)
 - **Orchestration:** LangChain (LCEL)
 - **Vector Store:** ChromaDB
@@ -17,10 +17,10 @@
 | Endpoint | Method | Description |
 | :--- | :--- | :--- |
 | `/ingestion/embed-pdf` | `POST` | **Upload & Ingest**: Accepts a PDF, saves it, and starts the async embedding pipeline. Returns a `task_id`. |
-| `/ingestion/status/{id}`| `GET` | **Task Tracking**: Checks if the background ingestion is `pending`, `processing`, or `completed`. |
-| `/qa/ask` | `POST` | **Question & Answering**: Performs semantic search, re-ranks results, and generates an answer with citations. |
+| `/ingestion/status/{task_id}`| `GET` | **Task Tracking**: Checks if the background ingestion is `pending`, `processing`, or `completed`. |
 | `/ingestion/tasks` | `GET` | **Monitoring**: Lists all recent ingestion tasks and their current status. |
 | `/ingestion/reset-db` | `DELETE` | **Maintenance**: Completely wipes the vector database for a fresh start. |
+| `/qa/ask` | `POST` | **Question & Answering**: Performs semantic search, re-ranks results, and generates an answer with citations. |
 
 ---
 
@@ -46,13 +46,18 @@ ollama serve
 ollama pull llama3  # or your preferred model
 
 ### 3. Start the API
-```bash
 # Using the provided script
+```bash
 chmod +x start_local.sh
 ./start_local.sh
 
 # Or directly via uvicorn
 uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+# Or directly via uvicorn
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+
 
 ## How to Use it
 
