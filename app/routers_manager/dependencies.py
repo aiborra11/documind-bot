@@ -6,7 +6,7 @@ from app.utils.utils import get_logger
 from app.database_manager.chroma_client import ChromaManager 
 from app.ingestion_manager.document_processor import DocumentProcessor
 from app.database_manager.embedding_service import EmbeddingService
-from app.retrieval_manager.rag_service import RAGService
+from app.retrieval_manager.rag_service import CrossEncoderReRanker, RAGService
 
 
 logger = get_logger(__name__)
@@ -44,8 +44,18 @@ def get_embedding_service(
     """
     return EmbeddingService(collection=db_client.collection)
 
+_reranker_instance: Optional[CrossEncoderReRanker] = None
+
+def get_reranker() -> CrossEncoderReRanker:
+    """Dependency to safely inject the CrossEncoderReRanker."""
+    global _reranker_instance
+    if _reranker_instance is None:
+        _reranker_instance = CrossEncoderReRanker()
+    return _reranker_instance
+
 def get_rag_service(
-    db_client: ChromaManager = Depends(get_db_client)
+    db_client: ChromaManager = Depends(get_db_client),
+    reranker: CrossEncoderReRanker = Depends(get_reranker)
 ) -> RAGService:
-    """Dependency to inject the simplified RAG service."""
-    return RAGService(db_client=db_client)
+    """Dependency to inject the full RAG service."""
+    return RAGService(db_client=db_client, reranker=reranker)
