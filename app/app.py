@@ -10,6 +10,7 @@ from app.database_manager.chroma_client import ChromaManager
 from app.routers_manager.dependencies import get_db_client
 from app.database_manager.database_config import db_config
 from app.routers_manager.embeddings_routers import embeddings_router
+from app.routers_manager.rag_routers import rag_router
 
 logger = get_logger(__name__)
 
@@ -23,6 +24,7 @@ async def lifespan(app: FastAPI):
     try:
         logger.info("[app] Starting application: Initializing resources")
 
+        # We do not add with() since we want to keep the connection open to reduce latency among requests +  prevent async issues with multiple connections. Instead, we will manually close it on shutdown.
         chroma_client.connect()
         app.state.db = chroma_client
 
@@ -43,6 +45,8 @@ app = FastAPI(
 )
 
 app.include_router(embeddings_router)
+app.include_router(rag_router)
+
 
 @app.get("/", include_in_schema=False)
 async def root_redirect():

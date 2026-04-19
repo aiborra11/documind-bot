@@ -6,6 +6,8 @@ from app.utils.utils import get_logger
 from app.database_manager.chroma_client import ChromaManager 
 from app.ingestion_manager.document_processor import DocumentProcessor
 from app.database_manager.embedding_service import EmbeddingService
+from app.retrieval_manager.rag_service import RAGService
+
 
 logger = get_logger(__name__)
 
@@ -41,3 +43,9 @@ def get_embedding_service(
     Extracts the collection from the active DB client safely.
     """
     return EmbeddingService(collection=db_client.collection)
+
+def get_rag_service(
+    db_client: ChromaManager = Depends(get_db_client)
+) -> RAGService:
+    """Dependency to inject the simplified RAG service."""
+    return RAGService(db_client=db_client)

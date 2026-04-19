@@ -13,6 +13,7 @@ from app.ingestion_manager.ingestion_config import ingestion_config
 logger = get_logger(__name__)
 
 
+# TODO: In future iterations, we might add a BaseClass for processors to allow for different document types (Word, Excel, etc.)/(Financial, Legal, Letters to shareholders, etc.), with specific handling.
 class DocumentProcessor:
     """
     Handles PDF parsing and text chunking.
