@@ -76,3 +76,27 @@ class ChromaManager:
         logger.info(f"Collection '{db_config.COLLECTION_NAME}' is ready.")
 
         return collection
+
+    def reset_collection(self) -> None:
+        """
+        Clears all documents from the current collection instead of dropping it.
+        This avoids stale UUID caching issues in ChromaDB's PersistentClient.
+        """
+        if not self._collection:
+            raise RuntimeError("ChromaDB connection is not established.")
+            
+        try:
+            # 1. Fetch all existing IDs in the collection (without fetching the heavy vectors/text)
+            existing_data = self._collection.get(include=[])
+            existing_ids = existing_data.get("ids", [])
+            
+            # 2. If there are documents, delete them by ID
+            if existing_ids:
+                self._collection.delete(ids=existing_ids)
+                logger.warning(f"Deleted {len(existing_ids)} documents. Collection is now empty.")
+            else:
+                logger.info("Collection is already empty. Nothing to reset.")
+                
+        except Exception as e:
+            logger.error(f"Failed to empty ChromaDB collection: {str(e)}")
+            raise RuntimeError("Could not reset the vector database.")

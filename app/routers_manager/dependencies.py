@@ -1,11 +1,11 @@
 from typing import Optional
-from fastapi import Request, HTTPException, status
+from fastapi import Request, HTTPException, status, Depends
 
 # ----- Project Imports -----
 from app.utils.utils import get_logger
 from app.database_manager.chroma_client import ChromaManager 
 from app.ingestion_manager.document_processor import DocumentProcessor
-
+from app.database_manager.embedding_service import EmbeddingService
 
 logger = get_logger(__name__)
 
@@ -32,3 +32,12 @@ def get_document_processor() -> DocumentProcessor:
     Currently stateless, so we instantiate it directly.
     """
     return DocumentProcessor()
+
+def get_embedding_service(
+    db_client: ChromaManager = Depends(get_db_client)
+) -> EmbeddingService:
+    """
+    Dependency to inject the EmbeddingService.
+    Extracts the collection from the active DB client safely.
+    """
+    return EmbeddingService(collection=db_client.collection)

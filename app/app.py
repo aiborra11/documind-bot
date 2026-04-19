@@ -9,7 +9,7 @@ from app.utils.utils import get_logger
 from app.database_manager.chroma_client import ChromaManager
 from app.routers_manager.dependencies import get_db_client
 from app.database_manager.database_config import db_config
-from app.routers_manager.embeddings_routers import processpdf_router
+from app.routers_manager.embeddings_routers import embeddings_router
 
 logger = get_logger(__name__)
 
@@ -42,7 +42,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-app.include_router(processpdf_router)
+app.include_router(embeddings_router)
 
 @app.get("/", include_in_schema=False)
 async def root_redirect():
