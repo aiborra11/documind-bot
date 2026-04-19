@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, status
 from app.utils.utils import get_logger
 from app.database_manager.chroma_client import ChromaManager    
 from app.routers_manager.dependencies import get_db_client, get_document_processor, get_embedding_service
-from app.ingestion_manager.document_processor import DocumentProcessor
+from app.documents_manager.document_processor import DocumentProcessor
 from app.database_manager.embedding_service import EmbeddingService
 
 logger = get_logger(__name__)

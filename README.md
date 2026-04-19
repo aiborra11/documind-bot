@@ -19,4 +19,6 @@ A Retrieval-Augmented Generation (RAG) system designed for document-based questi
 
 pip install -r requirements.txt
 chmod +x start_local.sh
+ollama serve
+ollama pull <model>
 ./start_local.sh

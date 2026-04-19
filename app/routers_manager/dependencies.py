@@ -4,7 +4,7 @@ from fastapi import Request, HTTPException, status, Depends
 # ----- Project Imports -----
 from app.utils.utils import get_logger
 from app.database_manager.chroma_client import ChromaManager 
-from app.ingestion_manager.document_processor import DocumentProcessor
+from app.documents_manager.document_processor import DocumentProcessor
 from app.database_manager.embedding_service import EmbeddingService
 from app.retrieval_manager.rag_service import CrossEncoderReRanker, RAGService
 from app.llm_manager.llm_service import LLMService, PromptBuilder

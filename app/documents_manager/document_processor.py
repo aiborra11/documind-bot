@@ -11,7 +11,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 # --------- Project Imports ---------
 from app.config import app_settings
 from app.utils.utils import get_logger
-from app.ingestion_manager.ingestion_config import ingestion_config
+from app.documents_manager.ingestion_config import ingestion_config
 
 logger = get_logger(__name__)
 
