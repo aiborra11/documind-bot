@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 import fitz  # PyMuPDF
 
@@ -46,24 +47,54 @@ class DocumentProcessor:
             raise ValueError("Invalid or corrupted PDF file.")
 
     def chunk_documents(self, raw_documents: List[Dict[str, Any]], filename: str) -> List[Dict[str, Any]]:
-        """Chunks the extracted documents into smaller pieces."""
+        """Chunks the extracted documents and filters out poor quality chunks."""
         chunks = []
+        discarded_count = 0
+
         for doc in raw_documents:
             split_texts = self._text_splitter.split_text(doc["page_content"])
+            
             for text_chunk in split_texts:
-                chunks.append({
-                    "text": text_chunk,
-                    "metadata": {
-                        "source": filename,
-                        "page": doc["metadata"]["page"]
-                    }
-                })
+                if self._is_valid_chunk(text_chunk):
+                    chunks.append({
+                        "text": text_chunk,
+                        "metadata": {
+                            "source": filename,
+                            "page": doc["metadata"]["page"]
+                        }
+                    })
+                else:
+                    discarded_count += 1
 
         if not chunks:
-            raise ValueError("No extractable text found in the document.")
+            raise ValueError("No extractable/valid text found in the document.")
 
-        logger.info(f"Created {len(chunks)} chunks from {filename}")
+        logger.info(f"Created {len(chunks)} valid chunks. Discarded {discarded_count} noisy chunks from {filename}.")
         return chunks
+
+    def _is_valid_chunk(self, text: str) -> bool:
+        """
+        Evaluates chunk quality to preserve tables/markdown but drop artifacts.
+        Criteria:
+        1. Must be longer than a minimum character count.
+        2. Must contain a minimum ratio of alphanumeric characters (prevents pure symbol chunks).
+        """
+        min_length = ingestion_config.MIN_CHUNK_LENGTH
+        min_alphanumeric_ratio = ingestion_config.MIN_ALPHANUMERIC_RATIO
+
+        text = text.strip()
+        
+        if len(text) < min_length:
+            return False
+            
+        # Count letters and numbers
+        alphanumeric_count = len(re.findall(r'[a-zA-Z0-9]', text))
+        ratio = alphanumeric_count / max(len(text), 1)
+        
+        if ratio < min_alphanumeric_ratio:
+            return False
+            
+        return True
 
     def save_document(self, file_path: str, filename: str) -> str:
         """Saves the document to the raw data directory."""
