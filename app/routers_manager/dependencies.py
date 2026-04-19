@@ -7,11 +7,12 @@ from app.database_manager.chroma_client import ChromaManager
 from app.ingestion_manager.document_processor import DocumentProcessor
 from app.database_manager.embedding_service import EmbeddingService
 from app.retrieval_manager.rag_service import CrossEncoderReRanker, RAGService
-
+from app.llm_manager.llm_service import LLMService, PromptBuilder
 
 logger = get_logger(__name__)
 
 
+# DATABASE DEPENDENCIES
 def get_db_client(request: Request) -> ChromaManager:
     """
     Dependency to safely extract the database client from the application state.
@@ -28,6 +29,7 @@ def get_db_client(request: Request) -> ChromaManager:
     return db_client
 
 
+# EMBEDDINGS DEPENDENCIES
 def get_document_processor() -> DocumentProcessor:
     """
     Dependency to inject the DocumentProcessor.
@@ -44,6 +46,9 @@ def get_embedding_service(
     """
     return EmbeddingService(collection=db_client.collection)
 
+
+
+# RAG DEPENDENCIES
 _reranker_instance: Optional[CrossEncoderReRanker] = None
 
 def get_reranker() -> CrossEncoderReRanker:
@@ -59,3 +64,18 @@ def get_rag_service(
 ) -> RAGService:
     """Dependency to inject the full RAG service."""
     return RAGService(db_client=db_client, reranker=reranker)
+
+
+# LLM DEPENDENCIES
+_llm_service_instance = None
+
+def get_llm_service() -> LLMService:
+    """
+    Dependency to safely inject the LLM Service.
+    Maintains a single instance to reuse the LCEL chain.
+    """
+    global _llm_service_instance
+    if _llm_service_instance is None:
+        prompt_builder = PromptBuilder()
+        _llm_service_instance = LLMService(prompt_builder=prompt_builder) 
+    return _llm_service_instance

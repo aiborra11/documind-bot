@@ -37,6 +37,8 @@ class CrossEncoderReRanker:
         logger.debug(f"Selected top {len(best_docs)} documents after re-ranking.")
         return best_docs
 
+# TODO: Implement a first layer LLM to find out the intent of the user so we can dynamically adjust the prompt/retrieval stratgy (LangGraph)
+# TODO: Implement a second layer LLM to find out the company we are asking information about so we can stablish an initial filter using metadata
 class RAGService:
     """
     Handles RAG (Retrieval-Augmented Generation) operations:

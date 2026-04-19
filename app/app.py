@@ -11,6 +11,7 @@ from app.routers_manager.dependencies import get_db_client
 from app.database_manager.database_config import db_config
 from app.routers_manager.embeddings_routers import embeddings_router
 from app.routers_manager.rag_routers import rag_router
+from app.routers_manager.llm_routers import llm_router
 
 logger = get_logger(__name__)
 
@@ -46,6 +47,7 @@ app = FastAPI(
 
 app.include_router(embeddings_router)
 app.include_router(rag_router)
+app.include_router(llm_router)
 
 
 @app.get("/", include_in_schema=False)
