@@ -5,6 +5,8 @@ class IngestionConfig(BaseSettings):
     """Configuration for the document ingestion pipeline."""
     CHUNK_SIZE: int = 500
     CHUNK_OVERLAP: int = 100
+    MIN_CHUNK_LENGTH: int = 50              # Drops tiny chunks coming from headers, footers, or page numbers that don't provide meaningful context.
+    MIN_ALPHANUMERIC_RATIO: float = 0.4     # Ensures chunks contain a reasonable amount of text vs. symbols, which helps preserve tables/markdown while filtering out noise.
     ALLOWED_EXTENSIONS: set[str] = {"pdf"}
     MAX_FILE_SIZE_MB: int = 20
     UPLOAD_CHUNK_SIZE_BYTES: int = 1024 * 1024
