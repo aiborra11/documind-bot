@@ -1,5 +1,7 @@
 # documind-bot
 Extract insights and answers from local files using LLMs.
+My personal objective with this project is to develop a bot that could help me into my financial analysis tasks. I do analyse financial statements from company's annual/quarterly reports so this could result on a pretty helpful project.
+Nevertheless, the bot must be able to process and Q&A any type of document.
 
 # Document QA RAG Pipeline
 
