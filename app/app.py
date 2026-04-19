@@ -1,11 +1,14 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.responses import RedirectResponse
 from contextlib import asynccontextmanager
 
+# -------------- Project Imports --------------
 from app.config import app_settings
 from app.utils.utils import get_logger
-
+from app.database_manager.chroma_client import ChromaManager
+from app.routers_manager.dependencies import get_db_client
+from app.database_manager.database_config import db_config
 
 logger = get_logger(__name__)
 
@@ -14,11 +17,23 @@ async def lifespan(app: FastAPI):
     """
     Handle application startup and shutdown events.
     """
+    chroma_client = ChromaManager()
+
     try:
-        logger.info("Application started!")
+        logger.info("[app] Starting application: Initializing resources")
+
+        chroma_client.connect()
+        app.state.db = chroma_client
+
+        logger.info("Vector DB connected and registered in dependencies")
+        yield 
+
     except Exception as e:
         logger.error(f"Failed to start application: {e}")
-    yield
+        raise e
+    finally:
+        chroma_client.close()
+        logger.info("Application shutdown: Connection closed")
 
 
 app = FastAPI(
@@ -33,5 +48,22 @@ async def root_redirect():
     """
     return RedirectResponse(url="/docs")
 
+@app.get("/health", tags=["System"])
+async def health_check(db: ChromaManager = Depends(get_db_client)) -> dict:
+    """
+    Check the service and database health status.
+    """
+    return {
+        "status": "online",
+        "database": db_config.COLLECTION_NAME,
+        "vector_count": db.collection.count() if db.collection else 0
+    }
+
+
 if __name__ == "__main__":
-    uvicorn.run("main:app", host=app_settings.HOST, port=app_settings.PORT, reload=app_settings.RELOAD)
+    uvicorn.run(
+        "app:app",
+        host=app_settings.HOST,
+        port=app_settings.PORT,
+        reload=app_settings.RELOAD,
+    )
