@@ -8,14 +8,14 @@ from fastapi import APIRouter, Depends, UploadFile, File, BackgroundTasks, HTTPE
 # --------- Project Imports ---------
 from app.utils.utils import get_logger
 from app.database_manager.chroma_client import ChromaManager    
-from app.routers_manager.dependencies import get_db_client, get_document_processor, get_embedding_service
-from app.documents_manager.document_processor import DocumentProcessor
+from app.routers_manager.dependencies_service import get_db_client, get_document_processor, get_embedding_service
+from app.documents_manager.document_service import DocumentProcessor
 from app.database_manager.embedding_service import EmbeddingService
 from app.documents_manager.ingestion_config import ingestion_config
 
 logger = get_logger(__name__)
 
-embeddings_router = APIRouter(prefix="/ingestion", tags=["Ingestion"])
+embeddings_router = APIRouter(prefix="/ingestion", tags=["Ingestion/Embeddings"])
 
 
 TASK_STORE: Dict[str, Dict[str, Any]] = {}

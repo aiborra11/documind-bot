@@ -5,19 +5,13 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from app.utils.utils import get_logger
 from app.llm_manager.llm_service import LLMService
 from app.rag_manager.rag_service import RAGService
-from app.routers_manager.dependencies import get_rag_service, get_llm_service
+from app.routers_manager.dependencies_service import get_rag_service, get_llm_service
+from app.routers_manager.routers_config import QueryRequest
 
 logger = get_logger(__name__)
 
 llm_router = APIRouter(prefix="/qa", tags=["Question & Answering"])
 
-
-class QueryRequest(BaseModel):
-    """Payload schema for end-to-end RAG requests."""
-    query: str = Field(..., min_length=3, description="The natural language question to ask the financial bot.")
-    initial_top_k: Optional[int] = Field(default=10, ge=1, le=50, description="Documents to retrieve from Vector DB.")
-    final_top_n: Optional[int] = Field(default=3, ge=1, le=20, description="Documents to send to the LLM after re-ranking.")
-    threshold: Optional[float] = Field(default=1.0, description="Optional distance threshold. Note is cosine distance, so lower is more similar.")
 
 @llm_router.post("/ask", status_code=status.HTTP_200_OK)
 async def ask_question_endpoint(
