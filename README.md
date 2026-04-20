@@ -110,4 +110,67 @@ Ask a natural language question based on the ingested data. The system will retr
   ]
 }
 ```
+### Step 4: Evaluate the System
+You can test the accuracy of the RAG pipeline using the built-in evaluation endpoints.
+
+**Option A: Full Batch Evaluation**
+Runs the entire dataset located at `data/input_data/eval.jsonl` and returns overall KPIs (Hit Rate, Citation Accuracy, Response Overlap). *Note: This is a synchronous process and may take a few minutes depending on hardware.*
+
+* **Request:** `POST /qa/evaluate/batch`
+* **Body:** None
+
+**Option B: Single Query Evaluation**
+Test a single question against an expected answer to see detailed overlap metrics.
+
+* **Request:** `POST /qa/evaluate`
+* **Payload (JSON):**
+```json
+{
+  "status": "success",
+  "summary": {
+    "total_questions_analyzed": 2,
+    "retrieval_hit_rate_percentage": 100,
+    "valid_citation_rate_percentage": 50,
+    "average_response_accuracy_percentage": 81.67,
+    "average_latency_seconds": 79.18
+  },
+  "detailed_results": [
+    {
+      "query": "Is AMD growing the operating margin within the data center vertical from 2024 to 2025?",
+      "metrics": {
+        "retrieval_hit": true,
+        "final_answer": "- Yes, according to Document [1], on Page: 21, there is an increase in both revenue and Operating Margin for Q4 2025 compared to Q4 2024. The operating margin increased from $3.9B (assumed as a percentage of the lower figure) with no specific value given but implied growth due to context, up to an actual dollar amount increase in Operating Income which is not directly stated here; however, it can be inferred that there was positive financial performance leading into Q4 2025.\n- Source: [1] AMD Q4'25 Earnings Slides FINAL.pdf | Page: 21",
+        "expected_answer": "Yes, AMD is grew a 3% from Q4 2024 to Q4 2025",
+        "matching_kw": [
+          "3",
+          "from",
+          "2024",
+          "2025"
+        ],
+        "valid_citation": true,
+        "overlap_score": 0.8,
+        "latency_seconds": 88.38
+      }
+    },
+    {
+      "query": "What is the EBITDA CAGR growth for Zedcor?",
+      "metrics": {
+        "retrieval_hit": true,
+        "final_answer": "According to Document [2], which states, \"Adj. EBITDA (Ms) - Revenue and Adj. EBITDA excludes discontinued energy services operations sold in 2021 for $11.3M,\" the company's adjusted earnings before interest, taxes, depreciation, and amortization (Adjusted EBITDA), which is used as a non-IFRS standard measure to illustrate financial performance by management, has grown at an annual compound growth rate (CAGR) of 44% over the specified period.\n\nSource: [Document 2], Page: 3",
+        "expected_answer": "Zedcor has grown at a rate of 44% Adj. EBITDA CAGR",
+        "matching_kw": [
+          "cagr",
+          "grown",
+          "rate",
+          "44",
+          "ebitda"
+        ],
+        "valid_citation": false,
+        "overlap_score": 0.83,
+        "latency_seconds": 69.99
+      }
+    }
+  ]
+}
+```
 

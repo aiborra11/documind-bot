@@ -1,3 +1,4 @@
+import re
 import sys
 import logging
 from typing import Union
@@ -28,3 +29,12 @@ def get_logger(name: str, level: Union[int, str] = logging.INFO) -> logging.Logg
         logger.propagate = False
         
     return logger
+
+
+def extract_keywords(text: str) -> set:
+    """
+    Extracts words with 4 or more characters AND all numbers regardless of length.
+    """
+
+    words = re.findall(r'\b(?:[a-z_]{4,}|\d+)\b', text.lower())
+    return set(words)

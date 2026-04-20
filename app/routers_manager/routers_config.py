@@ -25,4 +25,12 @@ class QueryRequest(BaseModel):
         description="Optional distance threshold for Stage 1 filtering. Leave null to avoid strict cutoffs."
     )
 
-
+class EvalRequest(BaseModel):
+    """Schema for evaluating a single question-answer pair."""
+    query: str
+    expected_answer: str
+    expected_source: str
+    expected_page: str
+    initial_top_k: int = Field(default=10, description="Documents fetched from Vector DB")
+    final_top_n: int = Field(default=3, description="Documents kept after re-ranking")
+    threshold: Optional[float] = Field(default=None, description="Minimum similarity score")
