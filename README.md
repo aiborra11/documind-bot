@@ -29,7 +29,7 @@
 ### 1. Environment Setup
 ```bash
 # Clone and enter the directory
-git clone <repository-url>
+git clone https://github.com/aiborra11/documind-bot.git
 cd documind-bot
 
 # Setup virtual environment
@@ -54,7 +54,7 @@ chmod +x start_local.sh
 ./start_local.sh
 
 # Or directly via uvicorn
-uvicorn app.main:app --host 0.0.0.0 --port 8000
+uvicorn app.app:app --host 0.0.0.0 --port 8000
 ```
 
 
