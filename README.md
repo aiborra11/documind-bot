@@ -25,13 +25,34 @@
 ---
 
 ## Execution Workflow
+You can execute the code by using either Docker or run it locally. 
 
-### 1. Environment Setup
+### Pre-requisite: Launch Local LLM
+Regardless of the deployment method, ensure Ollama is running natively on your host machine to leverage hardware acceleration (GPU), and pull the required model:
+```bash
+ollama serve
+ollama pull phi3.5  # or your preferred model
+```
+
+### Environment Setup
 ```bash
 # Clone and enter the directory
 git clone https://github.com/aiborra11/documind-bot.git
 cd documind-bot
+```
 
+### Option A: Docker Deployment
+```bash
+# Build and start the container
+docker-compose up --build -d
+```
+
+Verify the API is running:
+Open your browser and navigate to http://localhost:8000/docs to see the interactive Swagger UI.
+
+
+### Option B: Local Deployment
+```bash
 # Setup virtual environment
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
@@ -40,23 +61,14 @@ source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 2. Launch Local LLM
 ```bash
-# Ensure Ollama is running and pull the required model:
-ollama serve
-ollama pull llama3  # or your preferred model
-```
-
-### 3. Start the API
-```bash
-# Using the provided script
+# Start the API Using the provided script
 chmod +x start_local.sh
 ./start_local.sh
 
 # Or directly via uvicorn
 uvicorn app.app:app --host 0.0.0.0 --port 8000
 ```
-
 
 
 ## How to Use it
@@ -118,12 +130,6 @@ Runs the entire dataset located at `data/input_data/eval.jsonl` and returns over
 
 * **Request:** `POST /qa/evaluate/batch`
 * **Body:** None
-
-**Option B: Single Query Evaluation**
-Test a single question against an expected answer to see detailed overlap metrics.
-
-* **Request:** `POST /qa/evaluate`
-* **Payload (JSON):**
 ```json
 {
   "status": "success",
@@ -173,4 +179,21 @@ Test a single question against an expected answer to see detailed overlap metric
   ]
 }
 ```
+
+**Option B: Single Query Evaluation**
+Test a single question against an expected answer to see detailed overlap metrics.
+
+* **Request:** `POST /qa/evaluate`
+* **Payload (JSON):**
+```json
+{
+  "query": "What is the EBITDA CAGR growth for Zedcor?",
+  "expected_answer": "Zedcor has grown at a rate of 44% Adj. EBITDA CAGR",
+  "expected_source": "2025-12-15-Investor-Slide-Deck.pdf",
+  "expected_page": "3",
+  "initial_top_k": 10,
+  "final_top_n": 3
+}
+```
+
 
