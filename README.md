@@ -31,7 +31,7 @@ You can execute the code by using either Docker or run it locally.
 Regardless of the deployment method, ensure Ollama is running natively on your host machine to leverage hardware acceleration (GPU), and pull the required model:
 ```bash
 ollama serve
-ollama pull llama3  # or your preferred model
+ollama pull phi3.5  # or your preferred model
 ```
 
 ### Environment Setup
@@ -49,6 +49,7 @@ docker-compose up --build -d
 
 Verify the API is running:
 Open your browser and navigate to http://localhost:8000/docs to see the interactive Swagger UI.
+
 
 ### Option B: Local Deployment
 ```bash

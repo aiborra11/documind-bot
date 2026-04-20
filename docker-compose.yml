@@ -1,20 +1,14 @@
-version: '3.8'
-
 services:
   api:
     build: .
     container_name: documind_api
-    ports:
-      - "8000:8000"
+    network_mode: "host"
     volumes:
       - ./data:/app/data
     environment:
       - ENVIRONMENT=development
       - RAW_DATA_PATH=data/input_data
       # We exlude ollama from the dockerfile to allow our app run on GPU (since ollama needs to be installed on the host machine to access the GPU)
-      # So docker will communicate the internal host using port 11434
-      - OLLAMA_HOST=http://host.docker.internal:11434
-      - LLM_MODEL=llama3
-
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      # So docker will communicate using port 11434
+      - OLLAMA_HOST=http://localhost:11434
+      - LLM_MODEL=phi3.5
